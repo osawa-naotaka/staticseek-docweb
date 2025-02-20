@@ -1,0 +1,19 @@
+---
+title: Setting and Query
+---
+
+## Index Settings
+  - `LinearIndex`: Standard implementation (default choice)
+  - `GPULinearIndex`: WebGPU-accelerated implementation
+  - `HybridTrieBigramInvertedIndex`: High-performance implementation for larger datasets
+
+## Query Syntax
+
+- **Fuzzy Search**: Default behavior with configurable edit distance
+  - `distance:2 searchterm` - allows 2 character edits
+- **Exact Match**: `"exact phrase"`
+- **AND Search**: `term1 term2`
+- **OR Search**: `term1 OR term2`
+- **NOT Search**: `-term1 term2`
+- **Field-Specific**: `from:title searchterm`
+- **Custom Weights**: `from:title weight:2.5 searchterm`

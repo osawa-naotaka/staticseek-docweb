@@ -1,0 +1,35 @@
+---
+title: Query Result
+---
+
+Quere results are returned as an array of `SearchResult` objects:
+
+```typescript
+export type SearchResult = {
+    id: number;
+    key: Record<string, unknown>;
+    score: number;
+    refs: Reference[];
+};
+```
+
+- **id**: The index position of the matching document in the original array.
+- **key**: An object containing the specified fields from the original document. For example, if `['slug', 'data.title']` were set as `key_fields`, the result would include `{ slug: "matching slug", data: { title: "matching title" } }`.
+- **score**: A TF-IDF-based relevance score, where higher scores indicate stronger matches. Scores decrease proportionally to edit distance in fuzzy searches.
+- **refs**: An array of `Reference` objects containing details on the match locations.
+
+```typescript
+export type Reference = {
+    token: string;
+    path: Path;
+    pos?: number;
+    wordaround?: string;
+    distance: number;
+};
+```
+
+- **token**: The specific search term that matched.
+- **path**: The field where the match was found.
+- **pos**: The position of the match within the text (character index from the beginning of the field). For fuzzy matches, slight shifts may occur due to insertions/deletions.
+- **wordaround**: A snippet of text surrounding the match for better context.
+- **distance**: The edit distance for fuzzy search matches.

@@ -1,0 +1,25 @@
+---
+title: indexToObject
+---
+
+For static sites, you can pre-generate indices with SSG during build time to optimize page load performance:
+
+## Type Definition
+
+```typescript
+function indexToObject(index: StaticSeekIndex): StaticSeekIndexObject;
+```
+
+## Parameters
+
+## Usage
+
+```typescript
+import { createIndex, LinearIndex, StaticSeekError, indexToObject } from "staticseek"
+
+const index = createIndex(LinearIndex, array_of_articles);
+if(index instanceof StaticSeekError) throw index;
+const json = JSON.stringify(indexToObject(index));
+// Write the json to a file and upload it to the host
+```
+

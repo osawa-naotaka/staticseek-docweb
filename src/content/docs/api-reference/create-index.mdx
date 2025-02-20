@@ -1,0 +1,159 @@
+---
+title: createIndex
+---
+
+## Type Definition
+
+```typescript
+export function createIndex(
+    index_class: IndexClass,
+    contents: unknown[],
+    opt: IndexOpt = {},
+): StaticSeekIndex | StaticSeekError;
+
+export type IndexOpt = {
+    key_fields?: string[];
+    search_targets?: string[];
+    distance?: number;
+};
+```
+
+## Parameters
+
+- `index_class`: Specifies the search algorithm implementation
+  1. **LinearIndex** (Default)
+     - Best for small to medium-sized content
+     - Simple and reliable
+     - Good balance of performance and accuracy
+
+  2. **GPULinearIndex**
+     - WebGPU-accelerated fuzzy search
+     - 2-10x faster for larger datasets
+     - Gracefully falls back to LinearIndex when WebGPU is unavailable
+
+  3. **HybridTrieBigramInvertedIndex**
+     - ~100x faster search performance
+     - Ideal for larger datasets
+     - Trade-offs:
+       - Slower index generation
+       - Higher false positive rate for CJK-like languages
+       - Less precise fuzzy search for CJK-like languages
+       - Limited result metadata
+
+- `contents`: Array of JavaScript objects to be indexed
+  - Supports string fields and string array fields
+  - Nested arrays containing strings are excluded from search
+  
+- `env`: Configuration options for indexing and searching (optional)
+  - `key_fields`: Fields to include in search results
+  - `search_targets`: Fields to index for searching
+  - `distance`: Default edit distance for fuzzy search
+
+The function returns either a `StaticSeekIndex` object or `StaticSeekError` if validation fails.
+
+## Configuring Indexing
+
+When creating an index, you can control indexing and search behavior by specifying the `env` parameter.
+Here's an example data structure:
+
+```javascript
+const array_of_articles = [
+    {
+      slug: "introduction-to-js",
+      content: "JavaScript is a versatile programming language widely used for web development. It enables interactive features on websites, such as dynamic updates, animations, and form validation. JavaScript is essential for creating modern web applications and supports various frameworks like React and Vue.js.",
+      data: {
+        title: "Introduction to JavaScript",
+        description: "Learn the basics of JavaScript, a powerful language for modern web applications.",
+        tags: ["javascript", "web", "programming"]
+      }
+    },
+    // ...
+];
+```
+
+### key_fields
+To include specific fields in search results, use the `key_fields` option:
+
+```javascript
+const index = createIndex(LinearIndex, array_of_articles, {
+    key_fields: ['slug', 'data.title']
+});
+```
+
+### search_target
+You can limit which fields are indexed using the `search_targets` option:
+
+```javascript
+const index = createIndex(LinearIndex, array_of_articles, {
+    search_targets: ['data.title', 'data.description', 'data.tags']
+});
+```
+
+### distance
+Use the `distance` option to specify the default edit distance for fuzzy searches. 
+If the `distance` option is not specified, an edit distance of 1 (allowing up to one character mismatch) is used.
+
+```javascript
+const index = createIndex(LinearIndex, array_of_articles, {
+    distance: 2  // Set default edit distance for all searches
+});
+```
+
+If you set the edit distance to 0, fuzzy serch is disabled and exact match is performed instead.
+
+## Selecting Another Index
+
+The full-text search functionality provided by `LinearIndex` is sufficient for most static site use cases. However, if you require even faster search performance, alternative indexing methods can be utilized to optimize speed and efficiency.
+
+### GPU Linear Index
+
+```javascript
+import { GPULinearIndex, createIndex, search, StaticSeekError } from "staticseek";
+
+const index = createIndex(GPULinearIndex, array_of_articles);
+```
+
+By leveraging `GPULinearIndex`, fuzzy searches can be offloaded to the GPU, significantly improving performance. This method can achieve several times the speed of `LinearIndex`. The usage remains identical to `LinearIndex`, making it easy to switch between implementations.
+
+If a GPU is not available in the execution environment, `GPULinearIndex` will automatically fall back to `LinearIndex`, ensuring compatibility across different devices.
+
+### Hybrid Trie Bigram Inverted Index
+
+```javascript
+import { HybridTrieBigramInvertedIndex, createIndex, search, StaticSeekError } from "staticseek";
+
+const index = createIndex(HybridTrieBigramInvertedIndex, array_of_articles);
+```
+
+The `HybridTrieBigramInvertedIndex` offers an 10x - 100x search speed improvement compared to `LinearIndex`. The API usage remains the same, making integration seamless.
+
+However, this increased speed comes at a cost, introducing several trade-offs:
+
+1. **Longer Indexing Time**: Index creation is significantly slower, taking approximately 10-30 seconds for 100 articles. It is essential to generate the index in advance, such as during a static site generation (SSG) build process.
+2. **Higher Search Noise for CJK Language**: False positives (irrelevant results appearing in search results) become more frequent in languages such as Chinese, Japanese, and Korean(CJK).
+3. **Reduced Accuracy for CJK Languages**: Fuzzy searches in CJK may produce noisier results, matching unintended terms.
+4. **Limited Result Metadata**: Some search result details, such as exact match position (`pos`) and surrounding text (`wordaround`), are unavailable.
+5. **Incomplete TF-IDF Scoring**: Currently, only term frequency (TF) is calculated, leading to less refined ranking.
+
+Despite these drawbacks, `HybridTrieBigramInvertedIndex` ensures fast search performance across all devices, delivering a smooth user experience. If prioritizing responsiveness is critical, this index type is a good choice.
+
+
+
+## Storage Considerations
+- Index size approximately equals the total text size
+- HTTP compression (gzip) helps reduce transfer size
+- For indices > 1MB, consider:
+  - Using Local Storage
+  - Dynamic loading via fetch
+
+## Limitations
+
+- WebGPU acceleration requires compatible hardware/browser
+- Limited support for very large datasets (>10MB)
+
+### Important Notes
+
+- **Version Compatibility**: Ensure matching staticseek versions between index generation and usage
+- **Performance**: Index generation takes ~1s for 100 articles (~4MB of text), or 10-30s for `HybridTrieBigramInvertedIndex`
+- **Security**: Avoid including sensitive information (personal names, addresses) in indexed content
+- **Unicode Support**: All whitespace types (full-width, half-width, tabs, newlines, and others) are supported, both content and query.

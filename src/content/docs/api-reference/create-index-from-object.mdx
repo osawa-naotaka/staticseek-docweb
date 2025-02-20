@@ -1,0 +1,26 @@
+---
+title: createIndexFromObject
+---
+
+Alternatively, you can fetch the index manually.
+
+## Type Definition
+
+```typescript
+function createIndexFromObject(index: StaticSeekIndexObject): StaticSeekIndex | StaticSeekError;
+```
+
+## Parameters
+
+## Usage
+
+```typescript
+import { createIndexFromObject, search, StaticSeekError} from "staticseek";
+
+const response = await fetch(url);
+if (!response.ok) throw new Error();
+const json = await response.json();
+const index = createIndexFromObject(json);
+if (index instanceof StaticSeekError) throw index;
+const result = await search(index, "search word");
+

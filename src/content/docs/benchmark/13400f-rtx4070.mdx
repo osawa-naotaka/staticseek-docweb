@@ -1,0 +1,76 @@
+---
+title: Benchmark on Intel Core i5 13400F and NVIDIA GeForce RTX 4070
+---
+
+The following benchmarks were conducted using an **Intel Core i5 13400F** and **NVIDIA GeForce RTX 4070**. The index size is represented in kilobytes, while all other metrics are measured in milliseconds (ms).
+
+
+These benchmarks illustrate the performance trade-offs among the different index types. 
+While `HybridTrieBigramInvertedIndex` is faster, it comes at the cost of higher indexing time and reduced search accuracy. 
+Meanwhile, `GPULinearIndex` provides a substantial speed boost while maintaining accuracy, making it a viable option for environments with GPU support.
+
+For optimal performance, select the index type that best fits your application’s needs.
+
+#### **Exact Search Time (ms) (English)**
+| Text Size | Linear | GPU | Inverted |
+|-----------|--------|-----|----------|
+| 538 | 0.44 | 0.42 | 0.08 |
+| 829 | 0.63 | 0.62 | 0.11 |
+| 1712 | 1.25 | 1.27 | 0.16 |
+| 3001 | 2.10 | 2.12 | 0.14 |
+| 3748 | 2.65 | 2.63 | 0.11 |
+
+---
+
+#### **Fuzzy Search Time (ms) (English)**
+| Text Size | Linear | GPU | Inverted |
+|-----------|--------|-----|----------|
+| 538 | 10.78 | 5.04 | 0.24 |
+| 829 | 16.40 | 5.23 | 0.26 |
+| 1712 | 33.56 | 5.71 | 0.33 |
+| 3001 | 58.54 | 6.46 | 0.39 |
+| 3748 | 73.60 | 7.16 | 0.41 |
+
+---
+
+#### **Fuzzy Search Time (ms) (Japanese)**
+| Text Size | Linear | GPU | Inverted |
+|-----------|--------|-----|----------|
+| 476 | 3.27 | 4.20 | 0.13 |
+| 789 | 4.96 | 4.30 | 0.13 |
+| 1305 | 8.40 | 4.83 | 0.15 |
+| 2394 | 15.21 | 5.07 | 0.19 |
+| 3020 | 19.39 | 5.37 | 0.24 |
+
+---
+
+#### **Indexing Time (ms) (English)**
+| Text Size | Linear | GPU | Inverted |
+|-----------|--------|-----|----------|
+| 538 | 45.10 | 42.38 | 1,764 |
+| 829 | 73.20 | 63.50 | 2,733 |
+| 1712 | 133.00 | 133.36 | 5,727 |
+| 3001 | 237.86 | 225.22 | 10,332 |
+| 3748 | 285.94 | 286.18 | 13,038 |
+
+---
+
+#### **Index Size (Gzipped, kbyte) (English)**
+| Text Size | Linear | GPU | Inverted |
+|-----------|--------|-----|----------|
+| 538 | 191 | 191 | 91 |
+| 829 | 294 | 294 | 131 |
+| 1712 | 607 | 607 | 247 |
+| 3001 | 1057 | 1057 | 411 |
+| 3748 | 1324 | 1324 | 505 |
+
+---
+
+#### **Index Size (Gzipped, kbyte) (Japanese)**
+| Text Size | Linear | GPU | Inverted |
+|-----------|--------|-----|----------|
+| 476 | 165 | 165 | 136 |
+| 789 | 272 | 272 | 229 |
+| 1305 | 452 | 452 | 366 |
+| 2394 | 837 | 837 | 644 |
+| 3020 | 1053 | 1053 | 813 |

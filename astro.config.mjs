@@ -6,16 +6,79 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
+			title: "staticseek",
+			description: "A Lightweight, Fast Full-text Search Engine for Static Sites",
+			pagefind: false,
+			favicon: "/favicon.svg",
+			head: [{
+				tag: 'link',
+				attrs: {
+					rel: 'icon',
+					href: '/favicon.ico',
+					sizes: '32x32',
+				},
+			},],
+			logo: {
+				src: "./src/assets/logo-no-background.svg",
+				replacesTitle: true,
+			},
+			tableOfContents: {
+				minHeadingLevel: 2,
+				maxHeadingLevel: 3
+			},			
+			defaultLocale: "root",
+			locales: {
+				root: {
+					label: "English",
+					lang: "en"
+				},
+				ja: {
+					label: "Japanese",
+					lang: "ja"
+				}
+			},
 			social: {
-				github: 'https://github.com/withastro/starlight',
+				github: 'https://github.com/osawa-naotaka/staticseek',
 			},
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Start Here',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'Getting Started', slug: 'start-here/getting-started' },
+						{ label: 'Setting and Query', slug: 'start-here/setting-and-query' },
+						{ label: 'Performance', slug: 'start-here/performance' },
+						{ label: 'Integration', slug: 'start-here/integration' },
+					],
+				},
+				{
+					label: "Query",
+					items: [
+						{ label: 'Query Syntax', slug: 'query/query-syntax' },
+						{ label: 'Query Result', slug: 'query/query-result' },
+					]
+				},
+				{
+					label: "API Reference",
+					items: [
+						{ label: 'createIndex', slug: 'api-reference/create-index' },
+						{ label: 'indexToObject', slug: 'api-reference/index-to-object' },
+						{ label: 'createSearchFn', slug: 'api-reference/create-search-fn' },
+						{ label: 'createIndexFromObject', slug: 'api-reference/create-index-from-object' },
+						{ label: 'search', slug: 'api-reference/search' },
+					],
+				},
+				{
+					label: "Benchmark",
+					items: [
+						{ label: 'Intel Core i5 + RTX4070', slug: 'benchmark/13400f-rtx4070' },
+						{ label: 'Intel N100', slug: 'benchmark/n100' },
+					],
+				},
+				{
+					label: "Algorithms",
+					items: [
+						{ label: 'Search Algorithms', slug: 'algorithms/search-algorithms' },
+						{ label: 'Preprocessing', slug: 'algorithms/preprocessing' },
 					],
 				},
 				{

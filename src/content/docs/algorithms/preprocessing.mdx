@@ -1,0 +1,17 @@
+---
+title: Preprocessing
+---
+
+The preprocessing pipeline applies minimal transformations:
+- **Unicode normalization (NFKC)**
+- **Lowercasing for case-insensitive matching**
+- **Basic normalization for Japanese text**
+
+For inverted indexes, stopwords and stemming are not utilized to maintain neutrality across languages. Additionally, for graphemes composed of multiple code points (e.g., emojis), only the first code point is extracted for indexing.
+
+For `HybridTrieBigramInvertedIndex`, additional preprocessing steps are performed:
+- Symbols and punctuation are removed and used as delimiters
+- Tokenization by whitespace
+- Classification of languages that hard to segment into words (e.g., Japanese) versus those that do not (e.g., English)
+
+As a result, standalone symbols cannot be searched, and URLs are tokenized into components. Ideally, a universal language-agnostic tokenization mechanism would be available, but existing solutions remain incomplete. `Intl.Segmenter()` provides partial support for languages like Japanese and Chinese, and future improvements are anticipated.

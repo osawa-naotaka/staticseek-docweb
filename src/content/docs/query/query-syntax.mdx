@@ -1,0 +1,58 @@
+---
+title: Query Syntax
+---
+
+## Fuzzy Search
+By default, staticseek performs fuzzy search with an edit distance of 1,
+meaning it tolerates one character error per search term. You can adjust this tolerance in two ways:
+
+For individual searches, specify the edit distance in the query:
+```
+distance:2 searchterm    // Allows up to 2 character differences
+```
+
+Spaces between "distance:" and "2" is not allowed.
+
+To set a different default edit distance for all searches, configure it during index creation:
+```javascript
+const index = createIndex(LinearIndex, array_of_articles, {
+    distance: 2  // Set default edit distance for all searches
+});
+```
+
+## Exact Match Search
+Use double quotes for exact phrase matching:
+```
+"exact phrase"    // Matches the exact phrase including spaces
+```
+Use `\"` to include double quotes in the search term.
+
+
+## Boolean Operations
+- **AND Search**: Space-separated terms (both terms must match)
+  ```
+  term1 term2    // Documents containing both terms
+  ```
+
+- **OR Search**: Terms separated by OR (either term can match)
+  ```
+  term1 OR term2    // Documents containing either term
+  ```
+
+- **NOT Search**: Terms prefixed with minus (exclude documents with term)
+  ```
+  -term1 term2    // Documents with term2 but without term1
+  ```
+  Note: NOT search must be used with AND search; standalone NOT terms are ignored.
+
+## Field-Specific Search
+Limit search to specific fields:
+```
+from:title searchterm    // Search only in title field
+```
+
+## Score Weighting
+Adjust relevance scoring for specific terms:
+```
+from:title weight:2.5 searchterm    // Increase title matches' weight by 2.5x
+```

@@ -1,0 +1,13 @@
+---
+title: Performance
+---
+
+By selecting the appropriate index type, typical search times can be kept within a few milliseconds.
+Search performance for a 4MB dataset (worst case scenario, slowest index type, approximately 100 articles):
+
+- Exact Match: < 5ms
+- Fuzzy Search: < 150ms
+- Index Generation: ~1sec
+  - ~30sec for HybridTrieBigramInvertedIndex
+
+For detailed benchmarks across different hardware configurations and index types, see the [Benchmarks section](#Benchmark).

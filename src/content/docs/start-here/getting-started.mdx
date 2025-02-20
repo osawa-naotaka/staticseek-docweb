@@ -1,0 +1,87 @@
+---
+title: Getting Started
+description: Learn how to start emdedding search function to your stati site.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+staticseek is a client-side full-text search engine designed specifically for static websites. 
+It enables searching through arrays of JavaScript objects containing strings or string arrays. 
+By converting your articles into JavaScript objects, you can implement full-text search functionality on static sites without any server-side implementation.
+
+## Quick Start
+
+### Install staticseek
+
+Install staticseek to your project by running the following command in your terminal:
+
+<Tabs syncKey="pkg">
+
+<TabItem label="npm">
+```sh
+npm install staticseek
+```
+</TabItem>
+
+<TabItem label="pnpm">
+```sh
+pnpm install staticseek
+```
+</TabItem>
+
+<TabItem label="Yarn">
+```sh
+yarn staticseek
+```
+</TabItem>
+</Tabs>
+
+:::tip[Alternative method]
+You can directly import staticseek using [jsDelivr's CDN service](https://www.jsdelivr.com/package/npm/staticseek).
+:::
+
+
+### Perform indexing and searching
+
+Create index and run searching with that index to give search words as an argument.
+Here, `array_of_articles` represents an array of JavaScript objects containing the text to be searched.
+
+<Tabs syncKey="code-example">
+<TabItem label="search.ts">
+```typescript
+import { LinearIndex, createIndex, search, StaticSeekError } from "staticseek";
+import { array_of_articles } from "array_of_articles";
+
+// Create an index
+const index = createIndex(LinearIndex, array_of_articles);
+if(index instanceof StaticSeekError) throw index;
+
+// Perform a search
+const result = await search(index, "search word");
+if(result instanceof StaticSeekError) throw result;
+for(const r of result) {
+  console.log(array_of_articles[r.id]);
+}
+```
+</TabItem>
+
+<TabItem label="array_of_articles.ts">
+```typescript
+export const array_of_articles = [
+    {
+      slug: "introduction-to-js",
+      content: "JavaScript is a versatile programming language widely used for web development. It enables interactive features on websites, such as dynamic updates, animations, and form validation. JavaScript is essential for creating modern web applications and supports various frameworks like React and Vue.js.",
+      data: {
+        title: "Introduction to JavaScript",
+        description: "Learn the basics of JavaScript, a powerful language for modern web applications.",
+        tags: ["javascript", "web", "programming"]
+      }
+    },
+    // ...
+];
+```
+</TabItem>
+</Tabs>
+
+The search results are returned as an array, sorted by score (relevance). The id field in each result contains the array index of the matching document.
+
