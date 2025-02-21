@@ -2,7 +2,7 @@
 title: Query Result
 ---
 
-Quere results are returned as an array of `SearchResult` objects:
+Query results are returned as an array of `SearchResult` objects:
 
 ```typescript
 export type SearchResult = {
@@ -13,23 +13,80 @@ export type SearchResult = {
 };
 ```
 
-- **id**: The index position of the matching document in the original array.
-- **key**: An object containing the specified fields from the original document. For example, if `['slug', 'data.title']` were set as `key_fields`, the result would include `{ slug: "matching slug", data: { title: "matching title" } }`.
-- **score**: A TF-IDF-based relevance score, where higher scores indicate stronger matches. Scores decrease proportionally to edit distance in fuzzy searches.
-- **refs**: An array of `Reference` objects containing details on the match locations.
+### Fields
+
+- **id**
+
+  The index position of the matching document in the original array.
+  This allows you to retrieve the corresponding document from your data source.
+
+- **key**
+
+  An object containing the specified fields from the original document. For example, if `['slug', 'data.title']` were set as `key_fields`, the result would include `{ slug: "matching slug", data: { title: "matching title" } }`.
+  This provides context for the search result, allowing you to display relevant information to the user.
+
+- **score**
+
+  A TF-IDF-based relevance score, where higher scores indicate stronger matches. Scores decrease proportionally to edit distance in fuzzy searches.
+  This helps in ranking the search results, allowing users to see the most relevant matches first.
+
+- **refs**
+
+  An array of `Reference` objects containing details on the match locations.
+  - **Structure**:
+    ```typescript
+    export type Reference = {
+        token: string;
+        path: Path;
+        pos?: number;
+        wordaround?: string;
+        distance: number;
+    };
+    ```
+
+### Reference Fields
+
+- **token**
+
+  The specific search term that matched.
+  It is useful for highlighting the matched term in the search results.
+
+- **path**
+
+  The field where the match was found.
+  It helps in identifying which part of the document contained the match.
+
+- **pos**
+
+  The position of the match within the text (character index from the beginning of the field). For fuzzy matches, slight shifts may occur due to insertions/deletions.
+  This can be used to highlight the exact location of the match within the text.
+
+- **wordaround**
+
+  A snippet of text surrounding the match for better context.
+
+- **distance**
+
+  The edit distance for fuzzy search matches.
+  This ndicates how closely the search term matched the indexed content.
+
+### Example Usage
+
+Here’s an example of how to handle query results:
 
 ```typescript
-export type Reference = {
-    token: string;
-    path: Path;
-    pos?: number;
-    wordaround?: string;
-    distance: number;
-};
+const results: SearchResult[] = await search(index, "search term");
+results.forEach(result => {
+    console.log(`Matched Document ID: ${result.id}`);
+    console.log(`Score: ${result.score}`);
+    console.log(`Matched Key: ${JSON.stringify(result.key)}`);
+    result.refs.forEach(ref => {
+        console.log(`Matched Token: ${ref.token} at position ${ref.pos}`);
+        console.log(`Context: ${ref.wordaround}`);
+    });
+});
 ```
 
-- **token**: The specific search term that matched.
-- **path**: The field where the match was found.
-- **pos**: The position of the match within the text (character index from the beginning of the field). For fuzzy matches, slight shifts may occur due to insertions/deletions.
-- **wordaround**: A snippet of text surrounding the match for better context.
-- **distance**: The edit distance for fuzzy search matches.
+### Error Handling
+
+When processing query results, it is important to handle potential errors. If the search fails, a `StaticSeekError` will be returned. Ensure to check for this error and handle it appropriately in your application.

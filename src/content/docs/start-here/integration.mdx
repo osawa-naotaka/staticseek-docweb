@@ -2,15 +2,69 @@
 title: Integration
 ---
 
-Example implementations are available for:
-- Next.js
+staticseek can be integrated into various frameworks to enhance search functionality. Example implementations are available for:
+
+- **Next.js**
   - [Basic Example](https://github.com/osawa-naotaka/staticseek/tree/main/example/next/01.basic)
   - [Preindexed on-demand loading](https://github.com/osawa-naotaka/staticseek/tree/main/example/next/02.preindexed)
-- Astro
+
+- **Astro**
   - [Basic Example](https://github.com/osawa-naotaka/staticseek/tree/main/example/astro/01.basic)
   - [Preindexed on-demand loading](https://github.com/osawa-naotaka/staticseek/tree/main/example/astro/02.preindexed)
-- Nuxt
+
+- **Nuxt**
   - [Basic Example](https://github.com/osawa-naotaka/staticseek/tree/main/example/nuxt/01.basic)
   - [Preindexed on-demand loading](https://github.com/osawa-naotaka/staticseek/tree/main/example/nuxt/02.preindexed)
 
-  
+## Integration with Next.js
+
+To integrate staticseek with Next.js, follow these steps:
+
+1. **Install staticseek**:
+   ```bash
+   npm install staticseek
+   ```
+
+2. **Create an Index**: Use the `createIndex` function to create an index from your data.
+
+3. **Implement Search Functionality**: Use the `search` function to perform searches based on user input.
+
+### Error Handling
+
+When integrating staticseek, it is important to handle potential errors. For example, if the index cannot be created or if a search fails, a `staticseekError` will be returned. Ensure to check for this error and handle it appropriately in your application.
+
+## Integration with Astro
+
+To integrate staticseek with Astro, follow these steps:
+
+1. **Install staticseek**:
+   ```bash
+   npm install staticseek
+   ```
+
+2. **Create a Static Index**: Set up a static index file to pre-generate your search index.
+
+3. **Implement Search Functionality**: Use the `createSearchFn` function to create a search function that fetches the index and performs searches.
+
+### Error Handling
+
+As with Next.js, ensure to handle potential errors during the integration process. Check for `StaticSeekError` when creating the index or performing searches.
+
+## Integration with Nuxt
+
+To integrate staticseek with Nuxt, follow these steps:
+
+1. **Install staticseek**:
+   ```bash
+   npm install staticseek
+   ```
+
+2. **Create an Index**: Similar to the other frameworks, create an index from your data.
+
+3. **Implement Search Functionality**: Use the `search` function to perform searches based on user input.
+
+### Error Handling
+
+Handle errors appropriately, checking for `StaticSeekError` during index creation and search operations.
+
+By following these integration guides, you can effectively implement staticseek in your applications, enhancing the search experience for your users.

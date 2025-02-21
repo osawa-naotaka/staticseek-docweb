@@ -12,4 +12,22 @@ async function search(index: StaticSeekIndex, query: string): Promise<SearchResu
 
 ## Parameters
 
+- `index`: A `StaticSeekIndex` object that represents the index to be searched.
+- `query`: A string representing the [search query](/query/query-syntax).
+
+## Return Value
+
+The function returns either a `SearchResult[]` object described in [Query Result](/query/query-result) or `StaticSeekError` if query fails.
+
 ## Usage
+
+```typescript
+import { createIndex, LinearIndex, search, StaticSeekError } from "staticseek";
+
+const index = createIndex(LinearIndex, array_of_articles);
+if (index instanceof StaticSeekError) throw index;
+
+const result = await search(index, "search word");
+if (result instanceof StaticSeekError) throw result;
+// Process the search results
+```

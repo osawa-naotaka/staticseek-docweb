@@ -32,10 +32,6 @@ export default defineConfig({
 					label: "English",
 					lang: "en"
 				},
-				ja: {
-					label: "Japanese",
-					lang: "ja"
-				}
 			},
 			social: {
 				github: 'https://github.com/osawa-naotaka/staticseek',
@@ -46,8 +42,8 @@ export default defineConfig({
 					items: [
 						{ label: 'Getting Started', slug: 'start-here/getting-started' },
 						{ label: 'Setting and Query', slug: 'start-here/setting-and-query' },
+						{ label: 'Key Feature', slug: 'start-here/key-feature' },
 						{ label: 'Performance', slug: 'start-here/performance' },
-						{ label: 'Integration', slug: 'start-here/integration' },
 					],
 				},
 				{
@@ -68,6 +64,22 @@ export default defineConfig({
 					],
 				},
 				{
+					label: "Basic Integration",
+					items: [
+						{ label: 'Astro', slug: 'integration/astro/basic' },	
+						{ label: 'Next.js', slug: 'integration/next/basic' },	
+						{ label: 'Nuxt', slug: 'integration/nuxt/basic' },	
+					]
+				},
+				{
+					label: "Advanced Integration",
+					items: [
+						{ label: 'Astro', slug: 'integration/astro/preindex' },
+						{ label: 'Next.js', slug: 'integration/next/preindex' },
+						{ label: 'Nuxt', slug: 'integration/nuxt/preindex' },
+					]
+				},
+				{
 					label: "Benchmark",
 					items: [
 						{ label: 'Intel Core i5 + RTX4070', slug: 'benchmark/13400f-rtx4070' },
@@ -80,10 +92,6 @@ export default defineConfig({
 						{ label: 'Search Algorithms', slug: 'algorithms/search-algorithms' },
 						{ label: 'Preprocessing', slug: 'algorithms/preprocessing' },
 					],
-				},
-				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
 				},
 			],
 		}),

@@ -3,17 +3,61 @@ title: Setting and Query
 ---
 
 ## Index Settings
-  - `LinearIndex`: Standard implementation (default choice)
-  - `GPULinearIndex`: WebGPU-accelerated implementation
-  - `HybridTrieBigramInvertedIndex`: High-performance implementation for larger datasets
+
+staticseek provides several index types to optimize search performance:
+
+- **LinearIndex**: Standard implementation for small to medium datasets.
+    ```javascript
+    const index = createIndex(LinearIndex, array_of_articles);
+    ```
+
+- **GPULinearIndex**: WebGPU-accelerated implementation for faster fuzzy queries.
+    ```javascript
+    const index = createIndex(GPULinearIndex, array_of_articles);
+    ```
+
+- **HybridTrieBigramInvertedIndex**: High-performance implementation for larger datasets.
+    ```javascript
+    const index = createIndex(HybridTrieBigramInvertedIndex, array_of_articles);
+    ```
 
 ## Query Syntax
 
-- **Fuzzy Search**: Default behavior with configurable edit distance
-  - `distance:2 searchterm` - allows 2 character edits
-- **Exact Match**: `"exact phrase"`
-- **AND Search**: `term1 term2`
-- **OR Search**: `term1 OR term2`
-- **NOT Search**: `-term1 term2`
-- **Field-Specific**: `from:title searchterm`
-- **Custom Weights**: `from:title weight:2.5 searchterm`
+staticseek supports various query syntaxes:
+
+- **Fuzzy Search**: 
+  - By default, staticseek performs fuzzy search with an edit distance of 1, meaning it tolerates one character error per search term. Simply inputting a string will trigger a fuzzy search.
+
+- **Exact Match Search**: 
+  - Use quotes:
+    ```
+    "exact phrase"
+    ```
+
+- **Boolean Operations**:
+  - **AND**: 
+    ```
+    term1 term2
+    ```
+  - **OR**: 
+    ```
+    term1 OR term2
+    ```
+  - **NOT**: 
+    ```
+    -term1 term2
+    ```
+
+- **Field-Specific Search**: 
+  ```
+  from:title searchterm
+  ```
+
+- **Custom Weights**: 
+  ```
+  from:title weight:2.5 searchterm
+  ```
+
+### Error Handling
+
+Handle potential errors by checking for `StaticSeekError` when executing queries. Ensure to implement appropriate error handling in your application.

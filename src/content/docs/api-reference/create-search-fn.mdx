@@ -2,7 +2,7 @@
 title: createSearchFn
 ---
 
-The utility function `createSearchFn` provides an easy way to fetch the index and create a search function that uses it.
+The `createSearchFn` utility function streamlines the search implementation process by managing index fetching and search functionality in a single operation.
 
 ## Type Definition
 
@@ -15,6 +15,15 @@ export function createSearchFn(url: string, callback: SearchFnCallback = () => {
 
 ## Parameters
 
+- `url`: The endpoint URL for fetching the search index. The endpoint must return a JSON-formatted index.
+- `callback`: An optional function that receives a boolean parameter indicating the index loading state. This callback is invoked with `true` when index loading begins and `false` when loading completes, enabling integration with loading indicators or other UI elements.
+
+## Return Value
+
+Returns a `SearchFn` function that is compatible with the standard [search](/api-reference/search) function, with one key difference: the returned function includes the `StaticSeekIndex` in its closure. This eliminates the need to provide an index when invoking the `SearchFn`.
+
+The index loading process begins automatically upon the first invocation of the returned `SearchFn`.
+
 ## Usage
 
 ```typescript
@@ -24,4 +33,6 @@ const search_function = createSearchFn(index_url);
 const result = await search_function("search word");
 ```
 
-The `callback` function provided to `createSearchFn` is invoked when the index starts loading (`isLoading = true`) and again when the loading is complete (`isLoading = false`). This callback is useful for displaying a message to inform the user while the index is being loaded.
+## Error Handling
+
+While `createSearchFn` itself doesn't return `StaticSeekError`, the returned `SearchFn` may produce a `StaticSeekError` when called. Therefore, implement error handling for the `SearchFn` return value as you would for the standard `search` function.
