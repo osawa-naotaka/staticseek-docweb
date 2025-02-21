@@ -1,7 +1,8 @@
 ---
-title: Prepare index at deployment and read index on-demand(Next.js)
+title: Prepare index at deployment and read index on-demand (Next.js)
 ---
-Complete project files for this implementation is published on [Github staticseek repository](https://github.com/osawa-naotaka/staticseek/tree/main/example/next/02.preindexed).
+
+Complete project files for this implementation are published on the [Github staticseek repository](https://github.com/osawa-naotaka/staticseek/tree/main/example/next/02.preindexed).
 
 A working demo of this implementation is available at [staticseek-next.pages.dev](https://staticseek-next.pages.dev/).
 
@@ -49,7 +50,7 @@ export async function GET(request: Request) {
 }
 ```
 
-Key configuration points:
+### Key Configuration Points
 - Set `dynamic = "force-static"` to ensure static file generation.
 - Use `GPULinearIndex` for search functionality (other index types are available).
 - The `allPosts` variable contains an array of posts, each with title, slug, and content fields.
@@ -66,9 +67,7 @@ Create a search page component (e.g., in `src/app/page.tsx`):
 
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import type { JSX } from "react";
 import { createSearchFn, SearchResult, StaticSeekError } from "staticseek";
-import type { SearchFn } from "staticseek";
 import * as v from "valibot";
 
 const schema = v.object({
@@ -100,7 +99,7 @@ function StaticSeekResult(result: SearchResult[]): JSX.Element {
 }
 
 export default function Index() {
-    const search_fn = useRef<SearchFn>(null);
+    const search_fn = useRef(null);
     const [result, setResult] = useState<SearchResult[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -109,9 +108,9 @@ export default function Index() {
     }, [])
 
     async function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
-        if(search_fn.current) {
+        if (search_fn.current) {
             const r = await search_fn.current(e.target.value);
-            if(!(r instanceof StaticSeekError)) {
+            if (!(r instanceof StaticSeekError)) {
                 setResult(r);
             }
         }
@@ -129,14 +128,11 @@ export default function Index() {
 }
 ```
 
-Important implementation details:
-- Mark the component with `"use client"` to enable React hooks and client-side functionality.
-- The search function `search_fn` is created by `createSearchFn` only once during component initialization using useEffect, with an empty dependency array [] to ensure it runs only on mount.
-- The created search function `search_fn` itself does not trigger re-renders, so it is stored in a useRef rather than useState.
-- Index is loaded at the first call of `search_fn` to prevent unused fetch of index.
-- Index loading state is triggered by callback function given to the `createSearchFn`.
+### Implementation Details
+
+- For simplicity, this example uses `innerHTML`. However, in production applications, you should use `createElement` and `appendChild` methods instead of `innerHTML` to mitigate security risks associated with direct HTML injection.
+
+### Additional Notes
+
 - Search results are sorted by relevance score.
-- Each result includes:
-  - The key fields specified during index creation (title and slug).
-  - Matched content context via `refs[*].wordaround`.
-  - A link to the full post using the slug.
+- Error handling is implemented for both index creation and search operations.

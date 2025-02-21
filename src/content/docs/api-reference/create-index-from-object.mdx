@@ -12,10 +12,16 @@ function createIndexFromObject(index: StaticSeekIndexObject): StaticSeekIndex | 
 
 ## Parameters
 
+- `index`: An object representing the static seek index. This object should conform to the `StaticSeekIndexObject` structure.
+
+## Return Value
+
+The function returns either a `StaticSeekIndex` object or `StaticSeekError` if validation fails.
+
 ## Usage
 
 ```typescript
-import { createIndexFromObject, search, StaticSeekError} from "staticseek";
+import { createIndexFromObject, search, StaticSeekError } from "staticseek";
 
 const response = await fetch(url);
 if (!response.ok) throw new Error();
@@ -23,4 +29,8 @@ const json = await response.json();
 const index = createIndexFromObject(json);
 if (index instanceof StaticSeekError) throw index;
 const result = await search(index, "search word");
+```
 
+### Error Handling
+
+When using `createIndexFromObject`, it is important to handle potential errors. If the provided index object does not conform to the expected structure, a `StaticSeekError` will be returned. Ensure to check for this error and handle it appropriately in your application.

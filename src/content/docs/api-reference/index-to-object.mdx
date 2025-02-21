@@ -12,14 +12,19 @@ function indexToObject(index: StaticSeekIndex): StaticSeekIndexObject;
 
 ## Parameters
 
+- `index`: A `StaticSeekIndex` object that represents the index you want to convert to a JSON-compatible format.
+
+## Return Value
+
+The function returns a `StaticSeekIndexObject`, a JavaScript object.
+
 ## Usage
 
 ```typescript
-import { createIndex, LinearIndex, StaticSeekError, indexToObject } from "staticseek"
+import { createIndex, LinearIndex, StaticSeekError, indexToObject } from "staticseek";
 
 const index = createIndex(LinearIndex, array_of_articles);
-if(index instanceof StaticSeekError) throw index;
+if (index instanceof StaticSeekError) throw index;
 const json = JSON.stringify(indexToObject(index));
 // Write the json to a file and upload it to the host
 ```
-

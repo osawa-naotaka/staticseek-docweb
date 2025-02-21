@@ -34,6 +34,7 @@ The application searches through a predefined array and highlights matching keyw
 - For queries of 3+ characters: Fuzzy search with single-character tolerance
 
 ```vue
+// pages/index.vue
 <script setup lang="ts">
 import { LinearIndex, StaticSeekError, createIndex, search } from "staticseek";
 import type { SearchResult } from "staticseek";

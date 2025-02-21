@@ -46,8 +46,8 @@ export default defineConfig({
 					items: [
 						{ label: 'Getting Started', slug: 'start-here/getting-started' },
 						{ label: 'Setting and Query', slug: 'start-here/setting-and-query' },
+						{ label: 'Key Feature', slug: 'start-here/key-feature' },
 						{ label: 'Performance', slug: 'start-here/performance' },
-						{ label: 'Integration', slug: 'start-here/integration' },
 					],
 				},
 				{
@@ -96,10 +96,6 @@ export default defineConfig({
 						{ label: 'Search Algorithms', slug: 'algorithms/search-algorithms' },
 						{ label: 'Preprocessing', slug: 'algorithms/preprocessing' },
 					],
-				},
-				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
 				},
 			],
 		}),

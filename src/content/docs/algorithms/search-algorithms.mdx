@@ -6,14 +6,34 @@ title: Introduction to Search Algorithms
 
 The `LinearIndex` utilizes a straightforward exact match search algorithm. Rather than implementing a custom search mechanism, it simply leverages JavaScript’s built-in `String.prototype.indexOf()`. Due to optimizations in JavaScript engines like V8, this approach achieves high-speed performance even for full-text searches. However, as the number of documents grows, performance may degrade. At such a scale, the index size can reach tens of megabytes, making full-text search on a static site impractical.
 
+### Use Case
+- Best suited for small to medium-sized datasets where quick exact matches are required.
+
 For fuzzy search, the `bitap` algorithm is employed, which runs approximately 50 times slower than `indexOf()`. An attempt was made to implement `bitap` in Rust-WASM, but the performance was significantly slower than the JavaScript version, leading to its exclusion. The search process segments characters into graphemes using `Intl.Segmenter()`, ensuring correct edit distance calculations even for complex characters like kanji variants, emojis, and national flags. However, due to the need to maintain a separate index for grapheme units, memory usage is effectively doubled.
+
+### Performance Considerations
+- While `LinearIndex` is efficient for small datasets, it may not scale well for larger datasets due to increased memory usage and slower search times.
 
 ## GPULinearIndex
 
 The `GPULinearIndex` follows the same exact match search approach as `LinearIndex`. For fuzzy search queries exceeding 32 characters, it also defaults to the `LinearIndex` method. However, for shorter fuzzy searches, `GPULinearIndex` accelerates processing by running the `bitap` algorithm on the GPU. Each character position in the index spawns a parallel search thread, executing a `bitap`-based search across the query length. This implementation leverages WebGPU and executes in `wgsl`.
 
+### Use Case
+- Ideal for applications with GPU support that require fast fuzzy search capabilities.
+
 ## HybridTrieBigramInvertedIndex
 
-The `HybridTrieBigramInvertedIndex` categorizes characters into two groups: languages such as Japanese, where word boundaries are difficult to define, and languages like English, where words are naturally separated by spaces. Different indexing strategies are applied to each category. For English, a word-based inverted index with Trie data structiure is used, while for Japanese and similar languages, a bigram-based inverted index is created by fragmenting sentences without explicit word segmentation.
+The `HybridTrieBigramInvertedIndex` categorizes characters into two groups: languages such as Japanese, where word boundaries are difficult to define, and languages like English, where words are naturally separated by spaces. Different indexing strategies are applied to each category. For English, a word-based inverted index with Trie data structure is used, while for Japanese and similar languages, a bigram-based inverted index is created by fragmenting sentences without explicit word segmentation.
 
-Although increasing the n-gram size (e.g., using trigrams) could reduce search noise, it would also inflate the index size. A balance between accuracy and efficiency was sought, leading to the adoption of bigrams.
+### Use Case
+- Best for larger datasets where speed is critical, especially in multilingual applications.
+
+### Trade-offs
+- Increasing the n-gram size (e.g., using trigrams) could reduce search noise, but it would also inflate the index size. A balance between accuracy and efficiency was sought, leading to the adoption of bigrams.
+
+### Performance Considerations
+- The `HybridTrieBigramInvertedIndex` offers significant speed improvements but may introduce higher false positive rates for CJK languages and reduced accuracy in fuzzy searches.
+
+## Conclusion
+
+In summary, selecting the appropriate search algorithm depends on the specific use case and dataset size. Each algorithm has its strengths and weaknesses, and understanding these trade-offs is crucial for optimizing search performance in applications using StaticSeek.

@@ -2,12 +2,36 @@
 title: Performance
 ---
 
-By selecting the appropriate index type, typical search times can be kept within a few milliseconds.
-Search performance for a 4MB dataset (worst case scenario, slowest index type, approximately 100 articles):
+By selecting the appropriate index type, typical search times can be kept within a few milliseconds. The performance of StaticSeek is influenced by various factors, including the size of the dataset, the complexity of the queries, and the chosen indexing strategy.
 
-- Exact Match: < 5ms
-- Fuzzy Search: < 150ms
-- Index Generation: ~1sec
-  - ~30sec for HybridTrieBigramInvertedIndex
+### Search Performance for a 4MB Dataset
 
-For detailed benchmarks across different hardware configurations and index types, see the [Benchmarks section](#Benchmark).
+The following benchmarks illustrate the performance of different index types under worst-case scenarios, with approximately 100 articles:
+
+#### Exact Match
+- **LinearIndex**: < 5ms
+- **GPULinearIndex**: < 5ms
+- **HybridTrieBigramInvertedIndex**: < 1ms
+
+#### Fuzzy Search
+- **LinearIndex**: < 150ms
+- **GPULinearIndex**: < 25ms
+- **HybridTrieBigramInvertedIndex**: < 2ms
+
+#### Index Generation
+- **LinearIndex**: ~1sec
+- **GPULinearIndex**: ~1sec
+- **HybridTrieBigramInvertedIndex**: ~40sec
+
+#### Gzipped Index Size
+- **LinearIndex**: 1.3MB
+- **GPULinearIndex**: 1.3MB
+- **HybridTrieBigramInvertedIndex**: 0.5MB
+
+
+### Recommendations for Optimizing Performance
+
+1. **Choose the Right Index Type**: For smaller datasets, `LinearIndex` may be sufficient. For larger datasets or applications requiring fuzzy search, consider `GPULinearIndex` or `HybridTrieBigramInvertedIndex`.
+2. **Pre-generate Indices**: Generate indices during the build process to optimize search performance at runtime.
+
+For detailed benchmarks across different hardware configurations and index types, see the [Benchmarks section](/benchmark/13400f-rtx4070).

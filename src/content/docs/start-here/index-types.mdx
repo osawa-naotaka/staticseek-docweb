@@ -2,7 +2,28 @@
 title: Index Types
 ---
 
-  - `LinearIndex`: Standard implementation (default choice)
-  - `GPULinearIndex`: WebGPU-accelerated implementation
-  - `HybridTrieBigramInvertedIndex`: High-performance implementation for larger datasets
+StaticSeek offers several index types to optimize search performance based on your specific needs:
 
+- **LinearIndex**: 
+  - **Description**: The standard implementation and default choice for most applications.
+  - **Use Case**: Best suited for small to medium-sized datasets where quick exact matches are required.
+  - **Performance**: Provides reliable performance but may degrade with larger datasets.
+
+- **GPULinearIndex**: 
+  - **Description**: A WebGPU-accelerated implementation that enhances search speed for fuzzy queries.
+  - **Use Case**: Ideal for applications with GPU support that require fast fuzzy search capabilities.
+  - **Performance**: Achieves significant speed improvements, especially for larger datasets, while maintaining accuracy.
+
+- **HybridTrieBigramInvertedIndex**: 
+  - **Description**: A high-performance implementation designed for larger datasets, utilizing a combination of Trie and bigram indexing.
+  - **Use Case**: Best for applications that require fast search performance across multilingual datasets.
+  - **Performance**: Offers substantial speed improvements but may introduce higher false positive rates for languages like Japanese and reduced accuracy in fuzzy searches.
+
+### Choosing the Right Index
+
+When selecting an index type, consider the following factors:
+- **Dataset Size**: For smaller datasets, `LinearIndex` may suffice. For larger datasets, consider `GPULinearIndex` or `HybridTrieBigramInvertedIndex`.
+- **Search Requirements**: If fuzzy search is a priority, `GPULinearIndex` is recommended. For precise searches in CJK languages, `HybridTrieBigramInvertedIndex` may be more suitable.
+- **Hardware Availability**: Ensure that your deployment environment supports the necessary hardware for GPU acceleration if choosing `GPULinearIndex`.
+
+By understanding the strengths and weaknesses of each index type, you can make informed decisions that enhance the search experience for your users.
