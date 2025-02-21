@@ -2,7 +2,7 @@
 title: Basic Integration Guide for Astro
 ---
 
-This guide demonstrates how to integrate StaticSeek into a Astro application. 
+This guide demonstrates how to integrate staticseek into a Astro application. 
 You can find the complete implementation in our [GitHub repository](https://github.com/osawa-naotaka/staticseek/tree/main/example/astro/01.basic) and
 see it in action at our [live demo](https://staticseek-astro-basic.pages.dev/).
 
@@ -27,9 +27,9 @@ npm run build
 # Upload the generated "dist" directory to your HTTP server
 ```
 
-## Basic Usage of StaticSeek with Astro
+## Basic Usage of staticseek with Astro
 
-The following code (`src/pages/index.astro`) demonstrates the most basic usage of StaticSeek in a Single Page Application (SPA). This application extracts and displays matching keywords from a predefined array. For input queries of two or fewer characters, an exact match search is performed. For queries of three or more characters, a fuzzy search allowing one character mistake is executed.
+The following code (`src/pages/index.astro`) demonstrates the most basic usage of staticseek in a Single Page Application (SPA). This application extracts and displays matching keywords from a predefined array. For input queries of two or fewer characters, an exact match search is performed. For queries of three or more characters, a fuzzy search allowing one character mistake is executed.
 
 ```html
 // src/pages/index.astro
@@ -91,7 +91,7 @@ if(!entry) throw new Error("No data found");
 
 - For simplicity, this example uses `innerHTML`. However, in production applications, you should use `createElement` and `appendChild` methods instead of `innerHTML` to mitigate security risks associated with direct HTML injection.
 
-- While StaticSeek operates on the client side, code written in the Astro component's component script section only executes once during deployment. Therefore, StaticSeek is [implemented within a script element in the component template](https://docs.astro.build/en/guides/client-side-scripts/).
+- While staticseek operates on the client side, code written in the Astro component's component script section only executes once during deployment. Therefore, staticseek is [implemented within a script element in the component template](https://docs.astro.build/en/guides/client-side-scripts/).
 
 - This example retrieves search target data from Astro's Content Collections. The content collection directory structure and data schema are defined in `src/content.config.ts`. The sample uses the `getEntry()` function to fetch data from `sentences.json` within the `contents` directory.
 
