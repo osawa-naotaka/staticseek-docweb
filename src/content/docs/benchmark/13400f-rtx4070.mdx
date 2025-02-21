@@ -6,11 +6,6 @@ The following benchmarks were conducted using an **Intel Core i5 13400F** and **
 
 These benchmarks illustrate the performance trade-offs among the different index types. While `HybridTrieBigramInvertedIndex` is faster, it comes at the cost of higher indexing time and reduced search accuracy. Meanwhile, `GPULinearIndex` provides a substantial speed boost while maintaining accuracy, making it a viable option for environments with GPU support.
 
-### Benchmark Conditions
-- **Hardware**: Intel Core i5 13400F, NVIDIA GeForce RTX 4070
-- **Environment**: Benchmarks were conducted in a controlled environment to ensure consistency.
-- **Index Size**: The size of the index was monitored to evaluate the impact on performance.
-
 For optimal performance, select the index type that best fits your application’s needs.
 
 #### **Exact Search Time (ms) (English)**

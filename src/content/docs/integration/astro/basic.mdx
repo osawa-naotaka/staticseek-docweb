@@ -99,6 +99,12 @@ if(!entry) throw new Error("No data found");
 
 - When passing JavaScript objects through data attributes, the objects are bundled as attribute values in the final HTML file. Therefore, passing large objects can significantly increase the HTML file size, potentially slowing down browser loading times. When using this approach, carefully consider the size of the objects being transferred to maintain optimal performance.
 
+- The search index is created by passing the keyword array to `createIndex`.
+
+- The search query is input via a text field (`input:text`), and searches are executed on each `input` event.
+
+- Search results are displayed using the `id` field from the `SearchResult` type, which corresponds to the index of the keyword in the original `target` array.
+
 ### Additional Notes
 
 - Search results are sorted by relevance score.

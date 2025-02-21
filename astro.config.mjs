@@ -32,10 +32,6 @@ export default defineConfig({
 					label: "English",
 					lang: "en"
 				},
-				ja: {
-					label: "Japanese",
-					lang: "ja"
-				}
 			},
 			social: {
 				github: 'https://github.com/osawa-naotaka/staticseek',
