@@ -68,6 +68,22 @@ export default defineConfig({
 					],
 				},
 				{
+					label: "Basic Integration",
+					items: [
+						{ label: 'Astro', slug: 'integration/astro/basic' },	
+						{ label: 'Next.js', slug: 'integration/next/basic' },	
+						{ label: 'Nuxt', slug: 'integration/nuxt/basic' },	
+					]
+				},
+				{
+					label: "Advanced Integration",
+					items: [
+						{ label: 'Astro', slug: 'integration/astro/preindex' },
+						{ label: 'Next.js', slug: 'integration/next/preindex' },
+						{ label: 'Nuxt', slug: 'integration/nuxt/preindex' },
+					]
+				},
+				{
 					label: "Benchmark",
 					items: [
 						{ label: 'Intel Core i5 + RTX4070', slug: 'benchmark/13400f-rtx4070' },
