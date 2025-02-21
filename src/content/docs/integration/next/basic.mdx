@@ -35,14 +35,19 @@ The following code (`src/app/page.tsx`) demonstrates the simplest implementation
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { LinearIndex, createIndex, search, StaticSeekError } from "staticseek";
+import { LinearIndex, StaticSeekError, createIndex, search } from "staticseek";
 import type { SearchResult, StaticSeekIndex } from "staticseek";
 
 const target = [
-    "apple", "bridge", "candle", "dragon", "eclipse",
-    "feather", "glacier", "horizon", "island", "jungle",
-    "knight", "lantern", "mountain", "nebula", "ocean",
-    "puzzle", "quartz", "raven", "spectrum", "tornado"
+    "The sun sets behind the quiet mountain.",
+    "She found an old book in the dusty attic.",
+    "A gentle breeze rustled through the tall trees.",
+    "The cat slept peacefully on the warm windowsill.",
+    ...
+    "A black cat sat on the fence, watching the street.",
+    "The carpenter sanded the surface of the wooden table.",
+    "She blew a kiss to her loved one from afar.",
+    "The puppy fell asleep curled up in a soft blanket.",
 ];
 
 export default function Index() {
@@ -115,5 +120,6 @@ export default function Index() {
 #### Technical Considerations
 
 - The `"use client"` directive enables React hooks and client-side functionality
+- The `target` array is bundled in the final HTML file. Therefore, using large objects can significantly increase the HTML file size, potentially slowing down browser loading times. When using this approach, carefully consider the size of the objects being used to maintain optimal performance.
 - Search results are automatically sorted by relevance score
 - Error handling is implemented for both index creation and search operations
