@@ -40,15 +40,18 @@ export function createIndex(
 
 - `opt`: Configuration options for indexing and searching (optional)
   ```typescript
+  export type Path = string;
   export type IndexOpt = {
-      key_fields?: string[];
-      search_targets?: string[];
+      key_fields?: Path[];
+      search_targets?: Path[];
       distance?: number;
+      weights?: [Path, number][];
   };
   ```
   - `key_fields`: Fields to include in search results
   - `search_targets`: Fields to index for searching
   - `distance`: Default edit distance for fuzzy search
+  - `weights`: Field-specific weights for ranking
 
 
 ## Return Value
@@ -103,6 +106,39 @@ const index = createIndex(LinearIndex, array_of_articles, {
 
 If you set the edit distance to 0, fuzzy search is disabled and exact match is performed instead.
 
+### weights
+To assign different weights to specific fields for ranking, use the `weights` option:
+
+```javascript
+const index = createIndex(LinearIndex, array_of_articles, {
+    weights: [
+        ['data.title', 2],  // Boost title field
+        ['data.description', 0.5]  // Lower weight for description field
+    ]
+});
+```
+
+#### How to specify fields
+
+There are two ways to specify fields in a weights:
+
+1. **Full path**: Use the full path to the field, starting from the root object:
+   ```
+   weight: [
+       ['data.title', 2]
+   ]
+   ```
+2. **Field name only**: If the field is a leaf, you can specify the field name directly:
+   ```
+   weight: [
+       ['title', 2]
+   ]
+   ```
+
+You can specify intermediate fields to select all leaf of the intermediate fields.
+
+The default weight is 1. Higher weights increase the relevance of the field in search results.
+
 ## Selecting Another Index
 
 The full-text search functionality provided by `LinearIndex` is sufficient for most static site use cases. However, if you require even faster search performance, alternative indexing methods can be utilized to optimize speed and efficiency.
@@ -134,6 +170,6 @@ However, this increased speed comes at a cost, introducing several trade-offs:
 2. **Higher Search Noise for CJK Language**: False positives (irrelevant results appearing in search results) become more frequent in languages such as Chinese, Japanese, and Korean (CJK).
 3. **Reduced Accuracy for CJK Languages**: Fuzzy searches in CJK may produce noisier results, matching unintended terms.
 4. **Limited Result Metadata**: Some search result details, such as exact match position (`pos`) and surrounding text (`wordaround`), are unavailable.
-5. **Incomplete TF-IDF Scoring**: Currently, only term frequency (TF) is calculated, leading to less refined ranking.
+5. **Incomplete TF-IDF Scoring**: Currently, only term frequency (TF) is calculated and weights are not refrected, leading to less refined ranking.
 
 Despite these drawbacks, `HybridTrieBigramInvertedIndex` ensures fast search performance across all devices, delivering a smooth user experience. If prioritizing responsiveness is critical, this index type is a good choice.

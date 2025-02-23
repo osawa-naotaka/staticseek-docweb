@@ -54,13 +54,21 @@ Limit search to specific fields:
 from:title searchterm    // Search only in title field
 ```
 
-## Score Weighting
+### How to specify fields
 
-Adjust relevance scoring for specific terms:
-```
-from:title weight:2.5 searchterm    // Increase title matches' weight by 2.5x
-```
+There are two ways to specify fields in a query:
 
-### Error Handling
+1. **Full path**: Use the full path to the field, starting from the root object:
+   ```
+   from:data.title searchterm
+   ```
+2. **Field name only**: If the field is a leaf, you can specify the field name directly:
+   ```
+   from:title searchterm
+   ```
+
+You can only specify leaf fields. If you specify a non-leaf field, the results of the search is empty.
+
+## Error Handling
 
 When executing queries, it is important to handle potential errors. If the query fails or if the provided index is invalid, a `StaticSeekError` will be returned. Ensure to check for this error and handle it appropriately in your application.
