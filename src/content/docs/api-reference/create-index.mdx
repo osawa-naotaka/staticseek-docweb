@@ -118,26 +118,30 @@ const index = createIndex(LinearIndex, array_of_articles, {
 });
 ```
 
-#### How to specify fields
+The default weight is 1. Higher weights increase the relevance of the field in search results.
 
-There are two ways to specify fields in a weights:
+### How to specify fields
+
+There are two ways to specify fields:
 
 1. **Full path**: Use the full path to the field, starting from the root object:
    ```
+   key_fields: ['slug', 'data.title'],
+   search_targets: ['data.title', 'data.description', 'data.tags'],
    weight: [
        ['data.title', 2]
    ]
    ```
 2. **Field name only**: If the field is a leaf, you can specify the field name directly:
    ```
+   key_fields: ['slug', 'title'],
+   search_targets: ['title', 'description', 'tags'],
    weight: [
        ['title', 2]
    ]
    ```
 
-You can specify intermediate fields to select all leaf of the intermediate fields.
-
-The default weight is 1. Higher weights increase the relevance of the field in search results.
+You can specify a intermediate node to select all leaf of the intermediate node.
 
 ## Selecting Another Index
 
