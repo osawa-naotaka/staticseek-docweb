@@ -125,6 +125,24 @@ const schema = v.object({
     }),
 });
 
+function emphasizeKeyword(refs: Reference[]): JSX.Element {
+    const ref = refs[0]
+    if(ref.wordaround && ref.keyword_range) {
+        const wa_pre = ref.wordaround.slice(0, ref.keyword_range[0]);
+        const wa_kwd = ref.wordaround.slice(ref.keyword_range[0], ref.keyword_range[1]);
+        const wa_post = ref.wordaround.slice(ref.keyword_range[1]);
+        return (
+            <>
+                {wa_pre}
+                <em>{wa_kwd}</em>
+                {wa_post}
+            </>
+        );
+    }
+
+    return <></>;
+}
+
 function StaticSeekResult(result: SearchResult[]): JSX.Element {
     const lis = result.map((item) => {
         const key = v.parse(schema, item.key);
@@ -133,7 +151,7 @@ function StaticSeekResult(result: SearchResult[]): JSX.Element {
                 <Link href={`/posts/${key.slug}`}>
                     <h3>{key.data.title}</h3>
                 </Link>
-                <p>{item.refs[0].wordaround}</p>
+                <p>{emphasizeKeyword(item.refs)}</p>
             </li>
         );
     });
@@ -186,5 +204,5 @@ export default function Index() {
 - Search results are sorted by relevance score.
 - Each result includes:
   - The key fields specified during index creation (title and slug).
-  - Matched content context via `refs[*].wordaround`.
+  - Matched content context via `refs[*].wordaround` with range `refs[*].keyword_range`.
   - A link to the full post using the slug.

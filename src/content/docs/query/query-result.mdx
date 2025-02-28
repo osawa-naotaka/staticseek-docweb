@@ -40,6 +40,7 @@ export type SearchResult = {
         path: Path;
         pos?: number;
         wordaround?: string;
+        keyword_range?: [number, number];
         distance: number;
     };
     ```
@@ -65,6 +66,10 @@ export type SearchResult = {
 
   A snippet of text surrounding the match for better context.
 
+- **keyword_range**
+
+  The keyword positions within `wordaround`. The first element indicates the start position of the keyword, and the second element indicates the end position of the keyword.
+
 - **distance**
 
   The edit distance for fuzzy search matches.
@@ -82,7 +87,10 @@ results.forEach(result => {
     console.log(`Matched Key: ${JSON.stringify(result.key)}`);
     result.refs.forEach(ref => {
         console.log(`Matched Token: ${ref.token} at position ${ref.pos}`);
-        console.log(`Context: ${ref.wordaround}`);
+      	const wa_pre = ref.wordaround.slice(0, ref.keyword_range[0]);
+				const wa_kwd = ref.wordaround.slice(ref.keyword_range[0], ref.keyword_range[1]);
+				const wa_post = ref.wordaround.slice(ref.keyword_range[1]);
+        console.log(`Context: ${wa_pre}*${wa_kwd}*${wa_post}`);
     });
 });
 ```

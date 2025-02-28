@@ -135,7 +135,15 @@ input_text?.addEventListener("input", async () => {
 		for (const item of result) {
 			const key = v.parse(schema, item.key);
 			const li = document.createElement("li");
-			li.innerHTML = `<a href="/posts/${key.id}"><h3>${key.data.title}</h3></a><p>${item.refs[0].wordaround}</p>`;
+			const ref = item.refs[0];
+			if(ref.wordaround && ref.keyword_range) {
+				const wa_pre = ref.wordaround.slice(0, ref.keyword_range[0]);
+				const wa_kwd = ref.wordaround.slice(ref.keyword_range[0], ref.keyword_range[1]);
+				const wa_post = ref.wordaround.slice(ref.keyword_range[1]);
+				li.innerHTML = `<a href="/posts/${key.id}"><h3>${key.data.title}</h3></a><p>${wa_pre}<em>${wa_kwd}</em>${wa_post}</p>`;
+			} else {
+				li.innerHTML = `<a href="/posts/${key.id}"><h3>${key.data.title}</h3></a>`;
+			}
 			search_result.appendChild(li);
 		}
 	}
@@ -167,4 +175,4 @@ While staticseek operates on the client side, code written in the Astro componen
   - The key fields specified during index creation (title and slug).
   - The key is parsed using `valibot`.
   - A link to the full post using the id and title of the key fields.
-  - Matched content context via `refs[*].wordaround`.
+  - Matched content context via `refs[*].wordaround` with range `refs[*].keyword_range`.
