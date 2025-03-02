@@ -44,7 +44,7 @@ However, this algorithm has drawbacks. As many can imagine, it has a high comput
 
 To solve this problem, a data structure called the [inverted index](https://en.wikipedia.org/wiki/Inverted_index) was introduced. It's essentially like a book index. The key point of this algorithm is spending time upfront to create an index, enabling quick searches by simply looking up the index.
 
-An inverted index is an array of "terms and lists of document IDs containing those terms." The word is called a "term," and the list of document IDs is called a "posting list." The inverted index is created in three steps:
+An inverted index is an array of "terms and lists of document IDs containing those terms." The list of document IDs is called a "posting list." The inverted index is created in three steps:
 
 1. Assign an ID to each document, segment the document, and create a list of terms
 2. For each word in the document, create a tuple (term, posting list) and add this tuple to the inverted index. If the term is already registered, add the document ID to the posting list
