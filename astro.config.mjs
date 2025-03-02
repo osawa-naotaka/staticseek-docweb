@@ -93,6 +93,16 @@ export default defineConfig({
 						{ label: 'Preprocessing', slug: 'algorithms/preprocessing' },
 					],
 				},
+				{
+					label: "How To Create staticseek",
+					items: [
+						{ label: 'I Want to Search in Japanese!', slug: 'howto/howto01' },
+						{ label: 'Of Course I Want to Search in English Too!', slug: 'howto/howto02' },
+						{ label: 'I Want to Search Even with Typos!', slug: 'howto/howto03' },
+						{ label: 'I Want to Search with WebGPU!', slug: 'howto/howto04' },
+						{ label: 'I Want to Make the Search User-Friendly!', slug: 'howto/howto05' },
+					],
+				},
 			],
 		}),
 	],

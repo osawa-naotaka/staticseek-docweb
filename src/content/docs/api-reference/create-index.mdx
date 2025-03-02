@@ -29,7 +29,6 @@ export function createIndex(
      - ~100x faster search performance
      - Ideal for larger datasets
      - Trade-offs:
-       - Slower index generation
        - Higher false positive rate for CJK-like languages
        - Less precise fuzzy search for CJK-like languages
        - Limited result metadata
@@ -170,10 +169,8 @@ const index = createIndex(HybridTrieBigramInvertedIndex, array_of_articles);
 The `HybridTrieBigramInvertedIndex` offers a 10x - 100x search speed improvement compared to `LinearIndex`. The API usage remains the same, making integration seamless.
 
 However, this increased speed comes at a cost, introducing several trade-offs:
-1. **Longer Indexing Time**: Index creation is slower, taking approximately 2 seconds for 100 articles.
-2. **Higher Search Noise for CJK Language**: False positives (irrelevant results appearing in search results) become more frequent in languages such as Chinese, Japanese, and Korean (CJK).
-3. **Reduced Accuracy for CJK Languages**: Fuzzy searches in CJK may produce noisier results, matching unintended terms.
-4. **Limited Result Metadata**: Some search result details, such as exact match position (`pos`) and surrounding text (`wordaround`), are unavailable.
-5. **Incomplete TF-IDF Scoring**: Currently, only term frequency (TF) is calculated and weights are not refrected, leading to less refined ranking.
+1. **Higher Search Noise for CJK Language**: False positives (irrelevant results appearing in search results) become more frequent in languages such as Chinese, Japanese, and Korean (CJK).
+2. **Reduced Accuracy for CJK Languages**: Fuzzy searches in CJK may produce noisier results, matching unintended terms.
+3. **Limited Result Metadata**: Some search result details, such as exact match position (`pos`) and surrounding text (`wordaround`, `keyword_range`), are unavailable.
 
 Despite these drawbacks, `HybridTrieBigramInvertedIndex` ensures fast search performance across all devices, delivering a smooth user experience. If prioritizing responsiveness is critical, this index type is a good choice.
