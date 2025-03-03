@@ -30,8 +30,6 @@ My site is primarily a brand site, but it also includes a blog, so aesthetically
 
 ## There Are Few Full-Text Search Engines That Support Japanese!
 
-The introduction has become quite lengthy. Now for the main topic. Regarding the following topics, Lambda Note has published a book titled [Search Systems - Development Improvement Guide for Practitioners](https://www.lambdanote.com/products/ir-system-ebook?variant=42155477598377), which is very helpful. Those interested should consider reading it.
-
 I looked for existing full-text search engines that don't require server-side implementation, but this was challenging. While several full-text search engines exist, they mostly support languages like English, with very few supporting Japanese.
 
 Why are there so few full-text search engines that support Japanese? The primary reason is that word segmentation in Japanese is difficult. European languages like English separate words with spaces, making it easy to extract words from text. In contrast, Japanese, Chinese, Korean, and some other languages have punctuation marks but lack clear spaces between words. This makes mechanical word extraction impossible, requiring morphological analysis engines like [MeCab](https://taku910.github.io/mecab/). These engines need large dictionaries, making portable implementations difficult. This is the primary obstacle.
@@ -47,7 +45,7 @@ To solve this problem, a data structure called the [inverted index](https://en.w
 An inverted index is an array of "terms and lists of document IDs containing those terms." The list of document IDs is called a "posting list." The inverted index is created in three steps:
 
 1. Assign an ID to each document, segment the document, and create a list of terms
-2. For each word in the document, create a tuple (term, posting list) and add this tuple to the inverted index. If the term is already registered, add the document ID to the posting list
+2. For each term in the document, create a tuple (term, posting list) and add this tuple to the inverted index. If the term is already registered, add the document ID to the posting list
 3. Execute this for all documents
 
 To perform a search when given a search term, look through the inverted index, find the relevant term, and return the posting list associated with that term as the result. The inverted index is typically created using a hash structure, allowing for O(1) search time independent of document size.
