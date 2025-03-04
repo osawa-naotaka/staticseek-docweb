@@ -5,6 +5,6 @@ in pkgs.mkShell rec {
 
   buildInputs = with pkgs; [
     nodejs_22
-    yarn
+    yarn-berry
   ];
 }

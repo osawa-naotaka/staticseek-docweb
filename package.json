@@ -2,7 +2,7 @@
   "name": "staticseek-docweb",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.6.0",
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
@@ -12,8 +12,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.32.1",
+    "@astrojs/starlight": "^0.32.2",
     "astro": "^5.1.5",
     "sharp": "^0.32.5"
+  },
+  "resolutions": {
+    "esbuild": "*"
   }
 }
