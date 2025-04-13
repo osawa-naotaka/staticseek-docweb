@@ -33,9 +33,11 @@ export default defineConfig({
 					lang: "en"
 				},
 			},
-			social: {
-				github: 'https://github.com/osawa-naotaka/staticseek',
-			},
+			social: [{
+				icon: "github",
+				label: "github",
+				href: 'https://github.com/osawa-naotaka/staticseek',
+			}],
 			sidebar: [
 				{
 					label: 'Start Here',
