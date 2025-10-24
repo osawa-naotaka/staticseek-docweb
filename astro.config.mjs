@@ -1,10 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import mermaid from "astro-mermaid";
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
+		mermaid({
+			theme: 'default'
+		}),
 		starlight({
 			title: "staticseek",
 			description: "A Lightweight, Fast Full-text Search Engine for Static Sites",
@@ -33,9 +37,13 @@ export default defineConfig({
 					lang: "en"
 				},
 			},
-			social: {
-				github: 'https://github.com/osawa-naotaka/staticseek',
-			},
+			social: [
+				{
+					icon: 'github',
+					label: 'GitHub',
+					href: 'https://github.com/osawa-naotaka/staticseek'
+				}
+			],
 			sidebar: [
 				{
 					label: 'Start Here',
@@ -45,6 +53,12 @@ export default defineConfig({
 						{ label: 'Key Feature', slug: 'start-here/key-feature' },
 						{ label: 'Performance', slug: 'start-here/performance' },
 					],
+				},
+				{
+					label: "How It Works",
+					items: [
+						{ label: 'From index creation to search', slug: 'howto/process' },
+					]
 				},
 				{
 					label: "Query",
