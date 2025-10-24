@@ -2,7 +2,6 @@
   "name": "staticseek-docweb",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "yarn@4.6.0",
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
